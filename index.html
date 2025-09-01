@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="35XuknfFMKTgX5_401mIQvo9c6GzFS6wpkd_yPY8QaA" />
     <html lang="en"></html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -59,6 +58,34 @@
             --heading-color: #ccd6f6;
             --transition: all 0.3s ease;
             --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --spotlight-color: #4da6ff;
+        }
+
+        /* Spotlight Effect */
+        .spotlight {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(77, 166, 255, 0.25) 0%, rgba(77, 166, 255, 0.15) 30%, rgba(77, 166, 255, 0.05) 60%, transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease, transform 0.1s ease;
+            opacity: 0;
+            filter: blur(1px);
+            mix-blend-mode: screen;
+        }
+
+        .spotlight.active {
+            opacity: 1;
+        }
+
+        .spotlight.fading {
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
 
@@ -1170,6 +1197,9 @@
     </div>
     <div class="loader-text">Loading...</div>
 </div>
+
+<!-- Spotlight Effect -->
+<div class="spotlight" id="spotlight"></div>
     <!-- Header Section -->
     <header>
         <div class="logo">
@@ -1223,8 +1253,8 @@
         </div>
         <div class="about-content">
             <div class="about-text">
-                <p>Hello! I’m Atharva Khismatrao, a passionate Computer Science undergraduate with a strong interest in Data Science, Machine Learning, Artificial Intelligence, and Full-Stack Development. My journey into coding began in 2021, when I was first introduced to the Python programming language. Since then, I’ve been continuously learning Python as well as other programming languages, and improving my skills to become a better developer.</p>
-                <p>Fast forward to today, I’ve had the opportunity to work on several projects that strengthened my expertise in web development, data-driven solutions, and building efficient digital experiences. My main focus these days is on sharpening my problem-solving abilities, developing scalable applications, and creating products that are impactful, user-friendly, and inclusive.</p>
+                <p>Hello! I'm Atharva Khismatrao, a passionate software developer who loves turning ideas into real-world solutions. My journey began in 2019, when I built my first website and discovered my interest in coding.</p>
+                <p>Since then, I’ve worked on projects ranging from machine learning models to secure IoT dashboards and network security during my internship. Today, I focus on building full-stack applications that are scalable, secure, and impactful — while always exploring new technologies to push my limits.</p>
                 <p>Here are a few technologies I've been working with recently:</p>
                 <ul class="skills-list">
                     <li>JavaScript (ES6+)</li>
@@ -1707,9 +1737,121 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
     }, 3000);
 });
+
+// Spotlight Effect
+class SpotlightEffect {
+    constructor() {
+        this.spotlight = document.getElementById('spotlight');
+        this.idleTimer = null;
+        this.isIdle = false;
+        this.rafId = null;
+        this.targetX = 0;
+        this.targetY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.lerp = 0.15; // Smooth following factor
+        
+        this.init();
+    }
+    
+    init() {
+        // Desktop mouse events
+        document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+        document.addEventListener('mouseenter', () => this.showSpotlight());
+        document.addEventListener('mouseleave', () => this.hideSpotlight());
+        
+        // Mobile touch events
+        document.addEventListener('touchstart', (e) => this.handleTouch(e), { passive: true });
+        document.addEventListener('touchmove', (e) => this.handleTouch(e), { passive: true });
+        document.addEventListener('touchend', () => this.hideSpotlight(), { passive: true });
+        
+        // Start animation loop
+        this.animate();
+    }
+    
+    handleMouseMove(e) {
+        // Only handle if not on mobile
+        if (this.isMobile()) return;
+        
+        this.targetX = e.clientX;
+        this.targetY = e.clientY;
+        
+        // Always show spotlight on movement and reset timer
+        this.showSpotlight();
+        this.resetIdleTimer();
+    }
+    
+    handleTouch(e) {
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            this.targetX = touch.clientX;
+            this.targetY = touch.clientY;
+            this.showSpotlight();
+        }
+    }
+    
+    showSpotlight() {
+        this.isIdle = false;
+        this.spotlight.classList.remove('fading');
+        this.spotlight.classList.add('active');
+    }
+    
+    hideSpotlight() {
+        this.isIdle = true;
+        this.spotlight.classList.add('fading');
+        this.spotlight.classList.remove('active');
+        this.clearIdleTimer();
+    }
+    
+    resetIdleTimer() {
+        this.clearIdleTimer();
+        this.isIdle = false; // Ensure we're not idle when resetting timer
+        this.idleTimer = setTimeout(() => {
+            this.isIdle = true;
+            this.hideSpotlight();
+        }, 5000);
+    }
+    
+    clearIdleTimer() {
+        if (this.idleTimer) {
+            clearTimeout(this.idleTimer);
+            this.idleTimer = null;
+        }
+    }
+    
+    isMobile() {
+        return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+    }
+    
+    animate() {
+        // Smooth interpolation for cursor following
+        this.currentX += (this.targetX - this.currentX) * this.lerp;
+        this.currentY += (this.targetY - this.currentY) * this.lerp;
+        
+        // Update spotlight position
+        this.spotlight.style.left = this.currentX + 'px';
+        this.spotlight.style.top = this.currentY + 'px';
+        
+        // Continue animation loop
+        this.rafId = requestAnimationFrame(() => this.animate());
+    }
+    
+    destroy() {
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+        }
+        this.clearIdleTimer();
+    }
+}
+
+// Initialize spotlight effect after page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for the loader to finish
+    setTimeout(() => {
+        new SpotlightEffect();
+    }, 3500);
+});
     </script>
 </body>
-
 </html>
-
-
