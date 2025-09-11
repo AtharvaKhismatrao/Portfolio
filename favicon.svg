@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Dark blue background -->
+  <rect width="32" height="32" rx="6" fill="#0a192f"/>
+  
+  <!-- AK text as paths instead of text elements -->
+  <path d="M8.896 22h1.856l0.576-1.6h3.072L15 22h1.856l-3.184-8.64h-1.6L8.896 22zM12.912 15.2L14 18.72h-2.176L12.912 15.2z" fill="#ffffff"/>
+  <path d="M18.376 22h1.76v-3.584L20.68 17.6l2.88 4.4h2.064l-3.712-5.456L25.336 12h-2.096l-3.104 3.84V12h-1.76v10z" fill="#4a63e7"/>
+</svg>
