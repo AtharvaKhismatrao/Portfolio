@@ -680,98 +680,143 @@
             color: var(--primary-color);
         }
 
-        /* Projects Section */
-        .projects {
-            background-color: #0c1e3a;
-        }
+/* ...existing code... */
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+/* Projects Section */
+.projects {
+    background-color: #0c1e3a;
+}
 
-        .project-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: var(--transition);
-        }
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--box-shadow);
-        }
+.project-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure all cards have equal height */
+    max-width: 400px; /* Add maximum width constraint */
+    margin: 0 auto; /* Center cards in their grid cells */
+}
 
-        .project-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--box-shadow);
+}
 
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
+.project-image {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent image area from shrinking */
+    background-color: rgba(0, 0, 0, 0.3); /* Add background color as fallback */
+}
 
-        .project-card:hover .project-image img {
-            transform: scale(1.1);
-        }
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This ensures images fill the space properly */
+    object-position: center; /* Center the image in the container */
+    transition: var(--transition);
+    display: block; /* Remove any inline spacing */
+}
 
-        .project-content {
-            padding: 20px;
-        }
+.project-card:hover .project-image img {
+    transform: scale(1.1);
+}
 
-        .project-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--heading-color);
-            margin-bottom: 10px;
-        }
+.project-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow content to grow and fill space */
+    min-height: 280px; /* Set minimum height for consistency */
+}
 
-        .project-description {
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
+.project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--heading-color);
+    margin-bottom: 10px;
+}
 
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+.project-description {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex-grow: 1; /* Push tech tags and links to bottom */
+    min-height: 60px; /* Ensure minimum space for description */
+}
 
-        .project-tech span {
-            background-color: rgba(74, 99, 231, 0.2);
-            color: var(--primary-color);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
 
-        .project-links {
-            display: flex;
-            gap: 15px;
-        }
+.project-tech span {
+    background-color: rgba(74, 99, 231, 0.2);
+    color: var(--primary-color);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
 
-        .project-link {
-            color: var(--heading-color);
-            transition: var(--transition);
-        }
+.project-links {
+    display: flex;
+    gap: 15px;
+    margin-top: auto; /* Push links to bottom of card */
+}
 
-        .project-link:hover {
-            color: var(--primary-color);
-        }
+.project-link {
+    color: var(--heading-color);
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
 
-        .projects-cta {
-            text-align: center;
-            margin-top: 40px;
-        }
+.project-link:hover {
+    color: var(--primary-color);
+}
+
+.projects-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Hidden projects grid should match the main grid */
+.hidden-projects {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Match main grid */
+    gap: 30px;
+}
+
+.hidden-projects.active {
+    display: grid;
+}
+
+/* Ensure consistent card sizing in mobile view */
+@media screen and (max-width: 768px) {
+    .projects-grid,
+    .hidden-projects {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-card {
+        max-width: 100%; /* Allow full width on mobile */
+    }
+}
+
+/* ...existing code... */
 
         /* Experience Section */
         .experience {
@@ -1361,80 +1406,107 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="section-header">
-            <h2>My Projects</h2>
-            <div class="underline"></div>
-        </div>
-        <div class="projects-grid">
-            <!-- Project 1 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="RealEstate.webp" alt="Bangalore House Price Prediction Project by Atharva Khismatrao" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <div class="project-title">Banglore House Price Prediction</div>
-                    <p class="project-description">Our website predicts the price of the house in Banglore based on various parameters like Number of rooms, Bathrooms, Locality and the Total area of house.</p>
-                    <div class="project-tech">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>Python Flask</span>
-                        <span>MongoDB</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://real-estate-price-prediction-in-bengluru-gzgj.onrender.com/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="https://github.com/AtharvaKhismatrao/Real-Estate-Price-Prediction-in-Bengluru" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
-                    </div>
-                </div>
+
+<!-- Projects Section -->
+<section id="projects" class="projects">
+    <div class="section-header">
+        <h2>My Projects</h2>
+        <div class="underline"></div>
+    </div>
+    <div class="projects-grid">
+        <!-- Project 1 -->
+        <div class="project-card">
+            <div class="project-image">
+                <img src="RealEstate.webp" alt="Bangalore House Price Prediction Project by Atharva Khismatrao" loading="lazy">
             </div>
-            
-            <!-- Project 2 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="BeyondSight.webp" alt="Beyond Sight - ML Project for Visual Impairment by Atharva Khismatrao" loading="lazy">
+            <div class="project-content">
+                <div class="project-title">Banglore House Price Prediction</div>
+                <p class="project-description">Our website predicts the price of the house in Banglore based on various parameters like Number of rooms, Bathrooms, Locality and the Total area of house.</p>
+                <div class="project-tech">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>Python Flask</span>
+                    <span>MongoDB</span>
                 </div>
-                <div class="project-content">
-                    <div class="project-title">Beyond Sight</div>
-                    <p class="project-description">A web application that uses machine learning to help visually impaired individuals navigate their surroundings through audio cues.</p>
-                    <div class="project-tech">
-                        <span>Python</span>
-                        <span>ML</span>
-                        
-                    </div>
-                    <div class="project-links">
-                        <a href="#" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="https://github.com/AtharvaKhismatrao/BeyondSight" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Project 3 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Dashboard.webp" alt="UA Dashboard - Secure WebSocket Project by Atharva Khismatrao" loading="lazy">
-                </div>
-                <div class="project-content">
-                    <div class="project-title">UA Dashboard</div>
-                    <p class="project-description">Made a Website and a WebSocket server and made their connection secure using TLS/SSL and JWT.</p>
-                    <div class="project-tech">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                        <span>WebSocket</span>
-                        <span>Node.js</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="#" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
-                    </div>
+                <div class="project-links">
+                    <a href="https://real-estate-price-prediction-in-bengluru-gzgj.onrender.com/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/AtharvaKhismatrao/Real-Estate-Price-Prediction-in-Bengluru" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
                 </div>
             </div>
         </div>
-        <div class="projects-cta">
-            <a href="#" class="btn primary-btn">See More Projects</a>
+        
+        <!-- Project 2 -->
+        <div class="project-card">
+            <div class="project-image">
+                <img src="BeyondSight.webp" alt="Beyond Sight - ML Project for Visual Impairment by Atharva Khismatrao" loading="lazy">
+            </div>
+            <div class="project-content">
+                <div class="project-title">Beyond Sight</div>
+                <p class="project-description">A web application that uses machine learning to help visually impaired individuals navigate their surroundings through audio cues.</p>
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>ML</span>
+                    
+                </div>
+                <div class="project-links">
+                    <a href="#" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/AtharvaKhismatrao/BeyondSight" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                </div>
+            </div>
         </div>
-    </section>
+        
+        <!-- Project 3 -->
+        <div class="project-card">
+            <div class="project-image">
+                <img src="EthGuard.webp" alt="EthGuard - AI powered Etherium Fraud detection System by Atharva Khismatrao" loading="lazy">
+            </div>
+            <div class="project-content">
+                <div class="project-title">EthGuard</div>
+                <p class="project-description">A web application that uses machine learning model to detect if the Etherium account is fraud or legit by taking the Etherium address as input.</p>
+                <div class="project-tech">
+                    <span>Python</span>
+                    <span>ML</span>
+                    <span>Web Development</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="https://github.com/AtharvaKhismatrao/EthGuard?tab=readme-ov-file" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Projects (Initially Hidden) -->
+    <div class="projects-grid hidden-projects" id="moreProjects" style="display: none; margin-top: 30px;">
+        <!-- UA Dashboard Project (Moved here) -->
+        <div class="project-card">
+            <div class="project-image">
+                <img src="Dashboard.webp" alt="UA Dashboard - Secure WebSocket Project by Atharva Khismatrao" loading="lazy">
+            </div>
+            <div class="project-content">
+                <div class="project-title">UA Dashboard</div>
+                <p class="project-description">Made a Website and a WebSocket server and made their connection secure using TLS/SSL and JWT.</p>
+                <div class="project-tech">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                    <span>WebSocket</span>
+                    <span>Node.js</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    <a href="#" target="_blank" class="project-link"><i class="fab fa-github"></i> Source Code</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- You can add more hidden projects here -->
+    </div>
+
+    <div class="projects-cta">
+        <button id="toggleProjectsBtn" class="btn primary-btn">See More Projects</button>
+    </div>
+</section>
 
     <!-- Education & Achievements Section -->
 <section id="experience" class="experience">
@@ -1856,8 +1928,41 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         new SpotlightEffect();
     }, 3500);
+
+
+    
 });
+
+    // ...existing code...
+
+    // Toggle More Projects functionality
+    const toggleProjectsBtn = document.getElementById('toggleProjectsBtn');
+    const moreProjects = document.getElementById('moreProjects');
+    let projectsVisible = false;
+
+    if (toggleProjectsBtn && moreProjects) {
+        toggleProjectsBtn.addEventListener('click', function() {
+            projectsVisible = !projectsVisible;
+
+            if (projectsVisible) {
+                moreProjects.style.display = 'grid';
+                toggleProjectsBtn.textContent = 'Show Less Projects';
+                // Smooth scroll to show the new projects
+                setTimeout(() => {
+                    moreProjects.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                moreProjects.style.display = 'none';
+                toggleProjectsBtn.textContent = 'See More Projects';
+            }
+        });
+    }
+
+// ...existing code...
+
+
+        
+
     </script>
 </body>
 </html>
-
